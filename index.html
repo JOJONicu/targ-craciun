@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8" />
+  <title>Targ de Craciun</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: linear-gradient(180deg, #00111a, #001c33);
+      color: #fff;
+      min-height: 100vh;
+    }
+
+    header {
+      text-align: center;
+      padding: 2rem 1rem 1rem;
+      position: relative;
+    }
+
+    header h1 {
+      font-size: 2.3rem;
+      margin: 0;
+      text-shadow: 0 0 10px rgba(0,0,0,0.6);
+    }
+
+    header p {
+      margin: 0.5rem 0 0;
+      opacity: 0.9;
+    }
+
+    .snow {
+      pointer-events: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      overflow: hidden;
+      z-index: -1;
+    }
+
+    main {
+      max-width: 1100px;
+      margin: 0 auto 3rem;
+      padding: 1rem 1.5rem 3rem;
+      background: rgba(0, 0, 0, 0.35);
+      backdrop-filter: blur(6px);
+      border-radius: 1.5rem 1.5rem 0 0;
+      border-top: 1px solid rgba(255,255,255,0.12);
+      box-shadow: 0 -10px 30px rgba(0,0,0,0.6);
+    }
+
+    .info-box {
+      background: rgba(0,0,0,0.6);
+      border-radius: 1rem;
+      padding: 1rem 1.25rem;
+      margin-bottom: 1.5rem;
+      border: 1px solid rgba(255,255,255,0.12);
+      font-size: 0.95rem;
+    }
+
+    .info-box strong {
+      color: #ffd966;
+    }
+
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1rem;
+    }
+
+    .card {
+      position: relative;
+      overflow: hidden;
+      border-radius: 1rem;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.12);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.3s ease;
+      cursor: pointer;
+    }
+
+    .card:hover img {
+      transform: scale(1.05);
+    }
+
+    .card-footer {
+      padding: 0.75rem 0.9rem 0.9rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.85rem;
+    }
+
+    .card-footer span {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      opacity: 0.95;
+    }
+
+    .badge {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      border-radius: 999px;
+      padding: 0.1rem 0.5rem;
+      border: 1px solid rgba(255,255,255,0.4);
+      opacity: 0.85;
+    }
+
+    .btn-download {
+      border-radius: 999px;
+      padding: 0.35rem 0.9rem;
+      border: none;
+      font-size: 0.85rem;
+      cursor: pointer;
+      background: #ff4040;
+      color: #fff;
+      text-decoration: none;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.2s;
+      box-shadow: 0 8px 18px rgba(255,64,64,0.4);
+      white-space: nowrap;
+    }
+
+    .btn-download:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 10px 22px rgba(255,64,64,0.55);
+      opacity: 0.95;
+    }
+
+    .btn-download:active {
+      transform: translateY(1px) scale(0.98);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.6);
+    }
+
+    footer {
+      text-align: center;
+      font-size: 0.8rem;
+      opacity: 0.7;
+      padding-bottom: 1rem;
+    }
+
+    /* Modal imagine mare */
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.85);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 20;
+      padding: 1rem;
+    }
+
+    .modal.open {
+      display: flex;
+    }
+
+    .modal img {
+      max-width: 95vw;
+      max-height: 85vh;
+      border-radius: 1rem;
+      border: 2px solid rgba(255,255,255,0.5);
+      background: #000;
+    }
+
+    .modal-close {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      background: rgba(0,0,0,0.8);
+      border-radius: 999px;
+      padding: 0.4rem 0.9rem;
+      border: 1px solid rgba(255,255,255,0.4);
+      cursor: pointer;
+      font-size: 0.85rem;
+    }
+
+    @media (max-width: 600px) {
+      header h1 {
+        font-size: 1.7rem;
+      }
+      .card img {
+        height: 160px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="snow" id="snow"></div>
+
+  <header>
+    <h1>Targ de Craciun🎄</h1>
+    <p>Descarcă pozele de Crăciun</p>
+  </header>
+
+  <main>
+    <section class="info-box">
+      <strong>Cum funcționează?</strong><br />
+      Eu urc aici poze de Crăciun, iar tu poți să dai click pe butonul
+      <em>„Descarcă”</em> de sub fiecare poză ca să o salvezi în calculator sau telefon.
+    </section>
+
+    <section class="gallery">
+      <!-- CARD 1 -->
+      <article class="card">
+        <img src="imagini/poza3.jpeg" data-full="imagini/poza3.jpeg" alt="Poza 3">
+        <div class="card-footer">
+          <a href="imagini/poza3.jpeg" download class="btn-download">Descarcă</a>
+        </div>
+      </article>
+
+      <!-- CARD 2 -->
+      <article class="card">
+        <img src="imagini/poza4.jpeg" data-full="imagini/poza4.jpeg" alt="Poza 4">
+        <div class="card-footer">
+          <a href="imagini/poza4.jpeg" download class="btn-download">Descarcă</a>
+        </div>
+      </article>
+
+      <!-- CARD 3 -->
+      <article class="card">
+        <img src="imagini/poza2.jpeg" data-full="imagini/poza2.jpeg" alt="Poza 2">
+        <div class="card-footer">
+          <a href="imagini/poza2.jpeg" download class="btn-download">Descarcă</a>
+        </div>
+      </article>
+
+      <!-- CARD 4 -->
+      <article class="card">
+        <img src="imagini/poza1.jpeg" data-full="imagini/poza1.jpeg" alt="Poza 1">
+        <div class="card-footer">
+          <a href="imagini/poza1.jpeg" download class="btn-download">Descarcă</a>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <footer>
+    &copy; <span id="year"></span> Album foto de Crăciun – creat de mine, cu drag.
+  </footer>
+
+  <!-- Modal pentru imagine mărită -->
+  <div class="modal" id="modal">
+    <button class="modal-close" id="modalClose">Închide ✖</button>
+    <img id="modalImg" src="" alt="">
+  </div>
+
+  <script>
+    // Anul curent în footer
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    // Fulgi de zăpadă
+    const snowContainer = document.getElementById("snow");
+    for (let i = 0; i < 80; i++) {
+      const flake = document.createElement("div");
+      const size = Math.random() * 4 + 2;
+      flake.style.position = "absolute";
+      flake.style.width = size + "px";
+      flake.style.height = size + "px";
+      flake.style.borderRadius = "50%";
+      flake.style.background = "white";
+      flake.style.opacity = Math.random() * 0.7 + 0.3;
+      flake.style.left = Math.random() * 100 + "%";
+      flake.style.top = (Math.random() * -100) + "%";
+      flake.style.animation = `fall ${5 + Math.random() * 10}s linear infinite`;
+      snowContainer.appendChild(flake);
+    }
+
+    const style = document.createElement("style");
+    style.innerHTML = `
+      @keyframes fall {
+        0% { transform: translateY(0); }
+        100% { transform: translateY(120vh); }
+      }
+    `;
+    document.head.appendChild(style);
+
+    // Modal imagine
+    const modal = document.getElementById("modal");
+    const modalImg = document.getElementById("modalImg");
+    const modalClose = document.getElementById("modalClose");
+
+    document.querySelectorAll(".card img").forEach(img => {
+      img.addEventListener("click", () => {
+        modalImg.src = img.dataset.full || img.src;
+        modal.classList.add("open");
+      });
+    });
+
+    modalClose.addEventListener("click", () => {
+      modal.classList.remove("open");
+      modalImg.src = "";
+    });
+
+    modal.addEventListener("click", (e) => {
+      if (e.target === modal) {
+        modal.classList.remove("open");
+        modalImg.src = "";
+      }
+    });
+  </script>
+</body>
+</html>
